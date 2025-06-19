@@ -2,9 +2,27 @@ const { model } = require("mongoose");
 const Listing = require("../models/listing");
 
 module.exports.index = async (req,res)=>{
-    const alllistings = await Listing.find({});
-    res.render("listings/index", {alllistings});
-    // res.send("listing Route")
+    let query = {};
+    
+    if (req.query.q) {
+        const searchQuery = req.query.q;
+        const searchRegex = new RegExp(searchQuery, 'i');
+        query = {
+            $or: [
+                { title: searchRegex },
+                { location: searchRegex },
+                { country: searchRegex },
+                { description: searchRegex }
+            ]
+        };
+    }
+    
+    const alllistings = await Listing.find(query);
+
+    res.render("listings/index", {
+        alllistings,
+        searchQuery: req.query.q || ""
+    });
 };
 module.exports.renderNew = async (req,res)=>{
     res.render("listings/new");
@@ -21,6 +39,8 @@ module.exports.listingCreated= async (req,res,next)=>{
     req.flash("success", "New Listing Created !")
     res.redirect("/listings")
 }
+const { getOptimizedImageUrl } = require("../cloudConfig");
+
 module.exports.editRoute= async (req, res)=>{
     const {id}= req.params;
     const listing = await Listing.findById(id);
@@ -28,10 +48,8 @@ module.exports.editRoute= async (req, res)=>{
         req.flash("error","Listing Not Found");
         return res.redirect("/listings");
     }
-    let oldImage = listing.image.url;
-    oldImage = oldImage.replace("/upload", "/upload/w_300");
-    console.log(oldImage)
-    res.render("listings/edit", {listing,oldImage});
+    let oldImage = getOptimizedImageUrl(listing.image.url, 'show');
+    res.render("listings/edit", {listing, oldImage});
 }
 module.exports.listingUpdated= async(req,res)=>{
     let {id}= req.params;

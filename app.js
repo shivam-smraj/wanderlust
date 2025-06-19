@@ -5,7 +5,7 @@ if(process.env.NODE_ENV != "production"){
 
 const express = require("express");
 const app = express();
-const PORT=8080;
+const PORT = process.env.PORT || 8080;
 const mongoose = require('mongoose');
 const path = require("path");
 const  ejsMate = require("ejs-mate");

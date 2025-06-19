@@ -1,68 +1,36 @@
 <% layout("/layouts/boilerplate") %> 
-<style>
-  /* #filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
 
-  .filter {
-    text-align: center;
-    margin-right: 2rem;
-    margin-top: 2rem;
-    opacity: 0.63;
-  }
-
-  .filter:hover {
-    opacity: 1;
-    cursor: pointer;
-  }
-  
-  .tax-info {
-    display: none;
-  }
-
-  .tax-switch {
-    border: 1px solid black;
-    border-radius:  1rem;
-    height: 3rem;
-    padding: 1rem;
-    margin-left: 2rem;
-    align-items: center;
-    display: flex;
-  } */
-</style>
 
 
 <div id="filters">
-    <div class="filter">
-    <div><i class="fa-solid fa-fire"></i></div>
-    <p>Trending</p>
+    <div class="filter" data-filter="trending">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>Trending</p>
     </div>
 
-    <div class="filter">
-    <div><i class="fa-solid fa-bed"></i></div>
-    <p>Rooms</p>
+    <div class="filter" data-filter="rooms">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
     </div>
 
-    <div class="filter">
-    <div><i class="fa-solid fa-mountain-city"></i></div>
-    <p>Iconic Cities</p>
+    <div class="filter" data-filter="iconic">
+        <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic Cities</p>
     </div>
 
-    <div class="filter">
-    <div><i class="fa-brands fa-fort-awesome"></i></div>
-    <p>Castles</p>
+    <div class="filter" data-filter="castles">
+        <div><i class="fa-brands fa-fort-awesome"></i></div>
+        <p>Castles</p>
     </div>
 
-    <div class="filter">
-    <div><i class="fa-solid fa-mountain-sun"></i></i></div>
-    <p>Mountain Views</p>
+    <div class="filter" data-filter="mountains">
+        <div><i class="fa-solid fa-mountain-sun"></i></div>
+        <p>Mountain Views</p>
     </div>
 
-    <div class="filter">
-    <div><i class="fa-solid fa-tent"></i></div>
-    <p>Camping</p>
+    <div class="filter" data-filter="camping">
+        <div><i class="fa-solid fa-tent"></i></div>
+        <p>Camping</p>
     </div>
 
     <div class="filter">
@@ -85,24 +53,34 @@
     <p>Boats</p>
     </div>
 
-    <div class="tax-switch">
-    <div class="form-check-reverse form-switch">
-        <input 
-            class="form-check-input" 
-            type="checkbox" 
-            role="switch" 
-            id="flexSwitchCheckDefault">
-        <label 
-            class="form-check-label" 
-            for="flexSwitchCheckDefault">Display total</label>
-    </div>
-    </div>
-
+    <!-- <div class="tax-switch">
+        <div class="form-check-reverse form-switch">
+            <input 
+                class="form-check-input" 
+                type="checkbox" 
+                role="switch" 
+                id="flexSwitchCheckDefault">
+            <label 
+                class="form-check-label" 
+                for="flexSwitchCheckDefault">Display total</label>    
+        </div>
+    </div> -->
 </div>
 
-
-<hr>
-    <!-- <h3>All listing</h3> -->
+    <% if (alllistings.length === 0) { %>
+        <div class="no-results-container">
+            <div class="no-results-content">
+                <i class="fa-solid fa-search fa-3x mb-4"></i>
+                <h3>No listings found</h3>
+                <% if (searchQuery) { %>
+                    <p>We couldn't find any listings matching "<%= searchQuery %>"</p>
+                <% } else { %>
+                    <p>We couldn't find any listings matching your criteria</p>
+                <% } %>
+                <a href="/listings" class="btn btn-dark mt-3">Clear Search</a>
+            </div>
+        </div>
+    <% } %>
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
         <% for(let listing of alllistings){ %>
             <% if(listing.price<=200 || 1 ){ %>
@@ -126,9 +104,7 @@
                     </div>
                 </a>
             <% } %>
-        <% } %>
-    </div>
-    
+        <% } %>    </div>
 
 <script>
     let taxSwitch = document.getElementById("flexSwitchCheckDefault");

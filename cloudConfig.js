@@ -12,11 +12,27 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'wanderlust_DEV',
     allowedFormat: ["png", "jpg", "jpeg"],
-    // public_id: (req, file) => 'computed-filename-using-request',
+    transformation: [
+      { width: 800, height: 600, crop: 'fill', quality: 'auto:good' }
+    ],
   },
 });
 
+// Helper function to generate optimized image URLs
+const getOptimizedImageUrl = (originalUrl, type = 'card') => {
+    // Remove any existing transformations
+    const baseUrl = originalUrl.split('/upload/')[0] + '/upload/';
+    const imagePath = originalUrl.split('/upload/')[1];
+    
+    const transformations = {
+        card: 'w_300,h_200,c_fill,q_auto:good',
+        show: 'w_800,h_500,c_fill,q_auto:good',
+        thumbnail: 'w_100,h_100,c_fill,q_auto:good'
+    };
+    
+    return `${baseUrl}${transformations[type]}/${imagePath}`;
+};
 
 module.exports={
-    cloudinary,storage,
+    cloudinary,storage,getOptimizedImageUrl
 }
