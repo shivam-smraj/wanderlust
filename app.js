@@ -8,36 +8,35 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const mongoose = require('mongoose');
 const path = require("path");
-const  ejsMate = require("ejs-mate");
+const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
-
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
-const userRouter = require("./routes/user.js");
-
-const passport= require("passport");
+const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const User = require("./models/user.js")
+const User = require("./models/user.js");
 
+const MONGO_URL = process.env.MONGO_URL;
 
+// MongoDB Connection with retry logic
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(MONGO_URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 5000,
+            retryWrites: true,
+        });
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        process.exit(1);
+    }
+};
 
-const MONGO_URL=process.env.MONGO_URL;
-// console.log(MONGO_URL)
-
-main()
-    .then((res)=>{
-    console.log("connection success");
-    })
-
-    .catch(err => console.log(err));
-
-async function main() {
-  await mongoose.connect(MONGO_URL);
-}
+connectDB();
 
 
 app.set("view engine", "ejs");
