@@ -2,6 +2,9 @@
 
 Wanderlust is a modern, full-stack accommodation booking platform inspired by Airbnb. It allows users to list their properties, browse available accommodations, make bookings, and leave reviews. The platform is designed to be fast, secure, and fully responsive for all devices.
 
+
+**Live Demo:** [https://wanderlust‑sm‑raj.onrender.com](https://wanderlust-sm-raj.onrender.com)
+
 ## 🚩 Features
 - User authentication (signup, login, logout, session management)
 - Add, edit, and delete property listings
