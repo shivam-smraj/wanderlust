@@ -69,9 +69,13 @@ SESSION_SECRET=your_session_secret
 ```
 4. Start the development server
 ```bash
-npm start
+npm app.js
 ```
-The application will be available at `http://localhost:3000`
+  OR
+```bash
+nodemon app.js
+```
+The application will be available at `http://localhost:8080`
 
 ## 📁 Project Structure
 
